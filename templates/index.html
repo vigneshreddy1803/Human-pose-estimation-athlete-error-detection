@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RunRight</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Consistent background style */
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* ----- Navigation Bar ----- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #fff;
+            color: #333;
+        }
+
+        /* ----- Main Container ----- */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            padding: 50px 5%;
+        }
+
+        /* ----- Upload Section (Left Card) ----- */
+        .upload-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .upload-card h2 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .upload-card p.welcome-msg {
+            color: #00d4ff;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        /* Custom File Upload Button */
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px dashed #00d4ff;
+            color: #fff;
+            padding: 30px;
+            width: 100%;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .file-upload-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            background-color: #00d4ff;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #00a8cc;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* ----- Video Stream Section (Right Card) ----- */
+        .video-card {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 860px; /* Slightly larger to fit 800px video */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .video-header h3 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #00d4ff;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #00d4ff;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+        }
+
+        /* Video Stream Styling */
+        .video-stream {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.1);
+    background: black;
+    min-height: 400px;
+    position: relative;
+}
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .upload-card, .video-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🏃‍♂️ RunRight</div>
+        <div class="nav-links">
+            <span>Hi, {{ user }}</span>
+            <a href="/">Home</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Upload Section -->
+        <div class="upload-card">
+            <h2>Upload Video</h2>
+            <p class="welcome-msg">Ready to analyze your form?</p>
+            
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Select Running Video (MP4, MOV)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" name="video" required id="fileInput" accept="video/*">
+                        <div class="file-upload-btn" id="fileLabel">
+                            ⬆️ Click to select file
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Start Analysis</button>
+                <a href="/analysis" class="btn-submit" style="background:#28a745; margin-top:10px; display:block; text-align:center;">
+    Go to Analysis Page →
+</a>
+            </form>
+        </div>
+
+        <!-- Video Stream Section -->
+        <div class="video-card">
+            <div class="video-header">
+                <h3>Live Posture Analysis</h3>
+                <div class="status-indicator">
+                    <div class="dot"></div> Processing
+                </div>
+            </div>
+            
+            <!-- Video Stream -->
+            <div id="videoContainer" class="video-stream" style="display:flex; align-items:center; justify-content:center; color:#888; font-size:18px;">
+    
+    <img id="videoStream" src="{{ url_for('video_feed') }}" style="width:100%; border-radius:10px;">
+
+    <span id="placeholderText" style="position:absolute; display:none;">
+        ▶️ Stream Stopped
+    </span>
+
+</div>
+
+<button onclick="stopVideo()" class="btn btn-danger mt-3" style="width:100%;">
+    ⛔ Stop Live Analysis
+</button>
+
+<p id="statusMsg" class="mt-2 text-warning text-center"></p>
+
+<script>
+function stopVideo() {
+    fetch('/stop')
+    .then(() => {
+        document.getElementById("videoStream").style.display = "none";
+        document.getElementById("videoContainer").style.background = "black";
+        document.getElementById("placeholderText").style.display = "block";
+        document.getElementById("statusMsg").innerText = "Live Analysis Stopped";
+    });
+}
+</script>
+
+
+</script>
+        </div>
+
+    </div>
+
+    <!-- Simple script to update filename on selection -->
+    <script>
+        document.getElementById('fileInput').onchange = function() {
+            if(this.value) {
+                // Extract filename
+                var fileName = this.value.split('\\').pop();
+                document.getElementById('fileLabel').innerHTML = "✅ " + fileName;
+            }
+        };
+    </script>
+
+</body>
+</html>
